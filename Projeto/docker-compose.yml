@@ -1,0 +1,42 @@
+version: "latest"
+services:
+  db:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: Matteus123
+      MYSQL_USER: Matteus
+      MYSQL_PASSWORD: Matteus123
+      MYSQL_DATABASE: banco_dados
+    ports:
+    - '3305:3306'
+    networks:
+    - comun
+  adm:
+    image: phpmyadmin:latest
+    environment:
+      TZ: America/Sao_Paulo
+      PMA_ARBITRARY: 1 
+    ports:
+    - '8080:80'
+    depends_on:
+    - db
+    networks:
+    - comun
+  web:
+    container_name: webserver
+    build:
+      context: .
+    volumes:
+    - ./php:/usr/www/projetos/
+    ports:
+    - 8181:81
+    networks:
+    - comun
+networks:
+  comun:
+    driver: bridge
+
+    
+    
